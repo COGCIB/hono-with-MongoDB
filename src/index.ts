@@ -119,81 +119,81 @@ dbConnect()
 app.onError((error, c) => {
   return c.text(`App Error: ${error.message}`);
 });
-// let video = [];
+let video = [];
 
-// //get all the videos
-// app.get("/", (c) => {
-//   return c.json(video);
-// });
+//get all the videos
+app.get("/", (c) => {
+  return c.json(video);
+});
 
-// // post : method
+// post : method
 
-// app.post("/", async (c) => {
-//   const { videoName, channelName, duration } = await c.req.json();
-//   const newVideo = {
-//     id: randomUUID(),
-//     videoName,
-//     channelName,
-//     duration,
-//   };
-//   video.push(newVideo);
-//   return c.json(newVideo);
-// });
+app.post("/", async (c) => {
+  const { videoName, channelName, duration } = await c.req.json();
+  const newVideo = {
+    id: randomUUID(),
+    videoName,
+    channelName,
+    duration,
+  };
+  video.push(newVideo);
+  return c.json(newVideo);
+});
 
-// // lets get all the videos using stream
-// app.get("/videos", (c) => {
-//   return streamText(c, async (stream) => {
-//     for (const vid of video) {
-//       await stream.write(JSON.stringify(vid));
-//       await stream.sleep(1000);
-//     }
-//   });
-// });
+// lets get all the videos using stream
+app.get("/videos", (c) => {
+  return streamText(c, async (stream) => {
+    for (const vid of video) {
+      await stream.write(JSON.stringify(vid));
+      await stream.sleep(1000);
+    }
+  });
+});
 
-// // get videos by by it's id
+// get videos by by it's id
 
-// app.get("/videos/:id", (c) => {
-//   const vid = video.find((el) => el.id === c.req.param("id"));
-//   if (!vid) {
-//     return c.json({ error: "no such video record is found" }, 404);
-//   }
-//   return c.json(vid);
-// });
+app.get("/videos/:id", (c) => {
+  const vid = video.find((el) => el.id === c.req.param("id"));
+  if (!vid) {
+    return c.json({ error: "no such video record is found" }, 404);
+  }
+  return c.json(vid);
+});
 
-// // update a video record
+// update a video record
 
-// app.put("/videos/:id", async (c) => {
-//   const { id } = c.req.param();
-//   // const upVideo = video.find((el) => el.id === id);
-//   // if (!upVideo) {
-//   //   return c.json({ error: "No such video record found" }, 404);
-//   // }
-//   // const { videoName, channelName, duration } = await c.req.json();
-//   // upVideo.videoName = videoName;
-//   // upVideo.channelName = channelName;
-//   // upVideo.duration = duration;
+app.put("/videos/:id", async (c) => {
+  const { id } = c.req.param();
+  // const upVideo = video.find((el) => el.id === id);
+  // if (!upVideo) {
+  //   return c.json({ error: "No such video record found" }, 404);
+  // }
+  // const { videoName, channelName, duration } = await c.req.json();
+  // upVideo.videoName = videoName;
+  // upVideo.channelName = channelName;
+  // upVideo.duration = duration;
 
-//   // return c.json(upVideo);
-//   const index = video.findIndex((el) => el.id === id);
-//   if (index === -1) {
-//     return c.json({ error: "No such video record found" }, 404);
-//   }
-//   const { videoName, channelName, duration } = await c.req.json();
+  // return c.json(upVideo);
+  const index = video.findIndex((el) => el.id === id);
+  if (index === -1) {
+    return c.json({ error: "No such video record found" }, 404);
+  }
+  const { videoName, channelName, duration } = await c.req.json();
 
-//   video[index] = { ...video[index], videoName, channelName, duration };
-//   return c.json(video[index]);
-// });
+  video[index] = { ...video[index], videoName, channelName, duration };
+  return c.json(video[index]);
+});
 
-// // delete a video record by id
-// app.delete("/videos/:id", (c) => {
-//   const { id } = c.req.param();
-//   const index = video.findIndex((el) => el.id === id);
-//   if (index === -1) {
-//     return c.json({ error: "No such video record found" }, 404);
-//   }
-//   video.splice(index, 1);
-//   return c.json({ message: ` video record with ${id} successfuly deleted` });
-// });
+// delete a video record by id
+app.delete("/videos/:id", (c) => {
+  const { id } = c.req.param();
+  const index = video.findIndex((el) => el.id === id);
+  if (index === -1) {
+    return c.json({ error: "No such video record found" }, 404);
+  }
+  video.splice(index, 1);
+  return c.json({ message: ` video record with ${id} successfuly deleted` });
+});
 const port = 3000;
 console.log(`Server is running on port ${port}`);
 
